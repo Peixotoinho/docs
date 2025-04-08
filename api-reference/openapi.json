@@ -17,28 +17,27 @@
     "/api/ura/consultaplano/": {
       "get": {
         "description": "Retorna todos os planos do provedor",
-        "parameters": [
-          {
-            "name": "app",
-            "in": "query",
-            "description": "Nome da Aplicação no SGP (obrigatório)",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "zapisp"
-            }
-          },
-          {
-            "name": "token",
-            "in": "query",
-            "description": "Token da Aplicação no SGP (obrigatório)",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "20cb1qas-buf1-ner2-bc69-21bg229d1234"
-            }
+        "requestBody": {
+        "required": true,
+        "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "app": {
+                "type": "string",
+                "example": "zapisp"
+              },
+              "token": {
+                "type": "string",
+                "example": "20cb1qas-buf1-ner2-bc69-21bg229d1234"
+              }
+            },
+            "required": ["app", "token"]
+           }
           }
-        ],
+         }
+        },
         "responses": {
           "200": {
             "description": "Exemplo de retorno dos planos do provedor",
@@ -107,32 +106,752 @@
     "/api/ura/clientes/": {
       "post": {
         "description": "Lista todos os clientes do SGP",
-        "parameters": [
-          {
-            "name": "app",
-            "in": "query",
-            "description": "Nome da Aplicação no SGP (obrigatório)",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "zapisp"
-            }
-          },
-          {
-            "name": "token",
-            "in": "query",
-            "description": "Token da Aplicação no SGP (obrigatório)",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "20cb1qas-buf1-ner2-bc69-21bg229d1234"
+        "requestBody": {
+        "required": true,
+        "content": {
+        "multipart/form-data": {
+          "schema": {
+            "type": "object",
+            "properties": {
+              "app": {
+                "type": "string",
+                "example": "zapisp"
+              },
+              "token": {
+                "type": "string",
+                "example": "20cb1qas-buf1-ner2-bc69-21bg229d1234"
+              },
+              "offset": {
+                "type": "integer",
+                "example": 0
+              },
+              "limit": {
+                "type": "integer",
+                "example": 100
+              },
+              "cliente_id": {
+                "type": "integer",
+                "example": 123
+              },
+              "cpfcnpj": {
+                "type": "string",
+                "example": "00000000000"
+              },
+              "plano": {
+                "type": "integer",
+                "example": 1
+              },
+              "data_vencimento_inicio": {
+                "type": "string",
+                "example": "2023-01-01"
+              },
+              "data_vencimento_fim": {
+                "type": "string",
+                "example": "2023-01-31"
+              },
+              "data_pagamento_inicio": {
+                "type": "string",
+                "example": "2023-01-01"
+              },
+              "data_pagamento_fim": {
+                "type": "string",
+                "example": "2023-01-31"
+              },
+              "data_cadastro_inicio": {
+                "type": "string",
+                "example": "2023-01-01"
+              },
+              "data_cadastro_fim": {
+                "type": "string",
+                "example": "2023-01-31"
+              },
+              "contrato": {
+                "type": "integer",
+                "example": 1
+              },
+              "status": {
+                "type": "string",
+                "example": "ativo"
+              },
+              "portador": {
+                "type": "integer",
+                "example": 1
+              },
+              "contrato_status": {
+                "type": "integer",
+                "example": 1
+              },
+              "data_contrato_status_inicio": {
+                "type": "string",
+                "example": "2023-01-01"
+              },
+              "data_contrato_status_fim": {
+                "type": "string",
+                "example": "2023-01-31"
+              },
+              "omitir_contratos": {
+                "type": "boolean",
+                "default": false
+              },
+              "omitir_titulos": {
+                "type": "boolean",
+                "default": false
+              },
+              "data_alteracao_inicio": {
+                "type": "string",
+                "example": "2023-01-01"
+              },
+              "data_alteracao_fim": {
+                "type": "string",
+                "example": "2023-01-31"
+              },
+              "tipo_servico": {
+                "type": "string",
+                "example": "internet"
+              },
+              "exibir_conexao": {
+                "type": "string",
+                "example": "sim"
+              },
+              "exibir_observacao_cliente": {
+                "type": "string",
+                "example": "sim"
+              },
+              "exibir_observacao_servicos": {
+                "type": "string",
+                "example": "sim"
+              }
+            },
+            "required": ["app", "token"]
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "Plant deleted",
-            "content": {}
+            "description": "Retorna os clientes do SGP com paginação, contratos, serviços e demais informações",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "paginacao": {
+                      "type": "object",
+                      "properties": {
+                        "offset": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "example": 100
+                        },
+                        "parcial": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "total": {
+                          "type": "integer",
+                          "example": 1
+                        }
+                      }
+                    },
+                    "clientes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "nome": {
+                            "type": "string",
+                            "example": "NOME"
+                          },
+                          "cpfcnpj": {
+                            "type": "string",
+                            "example": "00000000000"
+                          },
+                          "dataCadastro": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2023-01-01"
+                          },
+                          "tipo": {
+                            "type": "string",
+                            "example": "TIPO_PESSOA"
+                          },
+                          "observacao_cliente": {
+                            "type": "string",
+                            "example": "OBSERVACAO_CLIENTE"
+                          },
+                          "endereco": {
+                            "type": "object",
+                            "properties": {
+                              "logradouro": {
+                                "type": "string",
+                                "example": "LOGRADOURO"
+                              },
+                              "numero": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "bairro": {
+                                "type": "string",
+                                "example": "BAIRRO"
+                              },
+                              "cidade": {
+                                "type": "string",
+                                "example": "CIDADE"
+                              },
+                              "uf": {
+                                "type": "string",
+                                "example": "UF"
+                              },
+                              "cep": {
+                                "type": "string",
+                                "example": "99999-999"
+                              },
+                              "complemento": {
+                                "type": "string",
+                                "example": "COMPLEMENTO"
+                              },
+                              "latitude": {
+                                "type": "string",
+                                "example": "-99.9999999"
+                              },
+                              "longitude": {
+                                "type": "string",
+                                "example": "-99.9999999"
+                              }
+                            }
+                          },
+                          "contratos": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "contrato": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "dataCadastro": {
+                                  "type": "string",
+                                  "format": "date",
+                                  "example": "2023-01-01"
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "example": "STATUS"
+                                },
+                                "servicos": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "integer",
+                                        "example": 1
+                                      },
+                                      "tipo": {
+                                        "type": "string",
+                                        "example": "TIPO"
+                                      },
+                                      "plano": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                          },
+                                          "descricao": {
+                                            "type": "string",
+                                            "example": "DESCRICAO"
+                                          }
+                                        }
+                                      },
+                                      "login": {
+                                        "type": "string",
+                                        "example": "LOGIN"
+                                      },
+                                      "observacao_servico": {
+                                        "type": "string",
+                                        "example": "OBSERVACAO_SERVICO"
+                                      },
+                                      "senha": {
+                                        "type": "string",
+                                        "example": "SENHA"
+                                      },
+                                      "mac": {
+                                        "type": "string",
+                                        "example": "X9:9X:9X:99:X9:X9"
+                                      },
+                                      "ip": {
+                                        "type": "string",
+                                        "example": "IP"
+                                      },
+                                      "grupo": {
+                                        "type": "string",
+                                        "example": "GRUPO"
+                                      },
+                                      "wifi_ssid": {
+                                        "type": "string",
+                                        "example": "WIFI_SSID"
+                                      },
+                                      "wifi_password": {
+                                        "type": "string",
+                                        "example": "WIF_PASSWORD"
+                                      },
+                                      "wifi_channel": {
+                                        "type": "string",
+                                        "example": "WIFI_CHANNEL"
+                                      },
+                                      "wifi_ssid_5": {
+                                        "type": "string",
+                                        "example": "WIFI_SSID_5"
+                                      },
+                                      "wifi_password_5": {
+                                        "type": "string",
+                                        "example": "WIFI_PASSWORD_5"
+                                      },
+                                      "onu": {
+                                        "type": "object",
+                                        "properties": {
+                                          "voip_sip_username": {
+                                            "type": "string",
+                                            "example": "VOIP_SIP_USERNAME"
+                                          },
+                                          "splitter": {
+                                            "type": "object",
+                                            "properties": {
+                                              "porta": {
+                                                "type": "integer",
+                                                "example": 1
+                                              },
+                                              "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                              },
+                                              "nome": {
+                                                "type": "string",
+                                                "example": "NOME"
+                                              }
+                                            }
+                                          },
+                                          "voip_mascara": {
+                                            "type": "string",
+                                            "example": "VOIP_MASCARA"
+                                          },
+                                          "vlan": {
+                                            "type": "integer",
+                                            "example": 1
+                                          },
+                                          "voip_username": {
+                                            "type": "string",
+                                            "example": "VOIP_USERNAME"
+                                          },
+                                          "telnet": {
+                                            "type": "string",
+                                            "example": "TELNET"
+                                          },
+                                          "rx": {
+                                            "type": "string",
+                                            "example": "-99.999"
+                                          },
+                                          "pon": {
+                                            "type": "integer",
+                                            "example": 1
+                                          },
+                                          "voip_service_name": {
+                                            "type": "string",
+                                            "example": "VOIP_SERVICE_NAME"
+                                          },
+                                          "wifi_ssid": {
+                                            "type": "string",
+                                            "example": "WIFI_SSID"
+                                          },
+                                          "conexao": {
+                                            "type": "object",
+                                            "properties": {
+                                              "status": {
+                                                "type": "string",
+                                                "example": "online"
+                                              },
+                                              "ip": {
+                                                "type": "string",
+                                                "example": "999.99.9.999"
+                                              },
+                                              "data_conexao": {
+                                                "type": "string",
+                                                "example": "2024-01-01 00:00:00"
+                                              },
+                                              "data_desconexao": {
+                                                "type": "string",
+                                                "example": "2024-01-02 00:00:00"
+                                              }
+                                            }
+                                          },
+                                          "wifi_password_5": {
+                                            "type": "string",
+                                            "example": "WIFI_PASSWORD_5"
+                                          },
+                                          "olt_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                          },
+                                          "wifi_password": {
+                                            "type": "string",
+                                            "example": "WIFI_PASSWORD"
+                                          },
+                                          "serial": {
+                                            "type": "string",
+                                            "example": "SERIAL"
+                                          },
+                                          "password": {
+                                            "type": "string",
+                                            "example": "PASSWORD"
+                                          },
+                                          "voip_sip_password": {
+                                            "type": "string",
+                                            "example": "VOIP_SIP_PASSWORD"
+                                          },
+                                          "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                          },
+                                          "onu": {
+                                            "type": "integer",
+                                            "example": 1
+                                          },
+                                          "slot": {
+                                            "type": "integer",
+                                            "example": 1
+                                          },
+                                          "web": {
+                                            "type": "boolean",
+                                            "example": true
+                                          },
+                                          "onu_login": {
+                                            "type": "string",
+                                            "example": "ONU_LOGIN"
+                                          },
+                                          "web_port": {
+                                            "type": "string",
+                                            "example": "WEB_PORT"
+                                          },
+                                          "pon_vlan": {
+                                            "type": "integer",
+                                            "example": 1
+                                          },
+                                          "tx": {
+                                            "type": "string",
+                                            "example": "9.999"
+                                          },
+                                          "voip_porta": {
+                                            "type": "string",
+                                            "example": "VOIP_PORTA"
+                                          },
+                                          "onu_password": {
+                                            "type": "string",
+                                            "example": "ONU_PASSWORD"
+                                          },
+                                          "wifi_ssid_5": {
+                                            "type": "string",
+                                            "example": "WIFI_SSID_5"
+                                          },
+                                          "olt_nome": {
+                                            "type": "string",
+                                            "example": "OLT_NOME"
+                                          },
+                                          "wifi_channel_5": {
+                                            "type": "string",
+                                            "example": "WIFI_CHANNEL_5"
+                                          },
+                                          "voip_telefone": {
+                                            "type": "string",
+                                            "example": "VOIP_TELEFONE"
+                                          },
+                                          "wifi_channel": {
+                                            "type": "integer",
+                                            "example": 11
+                                          },
+                                          "voip_ip": {
+                                            "type": "string",
+                                            "example": "VOIP_IP"
+                                          },
+                                          "login": {
+                                            "type": "string",
+                                            "example": "LOGIN"
+                                          },
+                                          "voip_gateway": {
+                                            "type": "string",
+                                            "example": "VOIP_GATEWAY"
+                                          },
+                                          "voip_vlan": {
+                                            "type": "string",
+                                            "example": "VOIP_VLAN"
+                                          }
+                                        }
+                                      },
+                                      "endereco": {
+                                        "type": "object",
+                                        "properties": {
+                                          "logradouro": {
+                                            "type": "string",
+                                            "example": "LOGRADOURO"
+                                          },
+                                          "numero": {
+                                            "type": "integer",
+                                            "example": 1
+                                          },
+                                          "bairro": {
+                                            "type": "string",
+                                            "example": "BAIRRO"
+                                          },
+                                          "cidade": {
+                                            "type": "string",
+                                            "example": "CIDADE"
+                                          },
+                                          "uf": {
+                                            "type": "string",
+                                            "example": "UF"
+                                          },
+                                          "cep": {
+                                            "type": "string",
+                                            "example": "99999-999"
+                                          },
+                                          "complemento": {
+                                            "type": "string",
+                                            "example": "COMPLEMENTO"
+                                          },
+                                          "latitude": {
+                                            "type": "string",
+                                            "example": "LATITUDE"
+                                          },
+                                          "longitude": {
+                                            "type": "string",
+                                            "example": "LONGITUDE"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "titulos": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "portador": {
+                                  "type": "string",
+                                  "example": "PORTADOR"
+                                },
+                                "numeroDocumento": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "contrato": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "example": "STATUS"
+                                },
+                                "valor": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "example": 99.99
+                                },
+                                "valorCorrigido": {
+                                  "type": "number",
+                                  "format": "float",
+                                  "example": 99.99
+                                },
+                                "valorPago": {
+                                  "type": "string",
+                                  "example": ""
+                                },
+                                "diasAtraso": {
+                                  "type": "integer",
+                                  "example": 0
+                                },
+                                "codigoBarras": {
+                                  "type": "string",
+                                  "example": "000"
+                                },
+                                "codigoPix": {
+                                  "type": "string",
+                                  "example": ""
+                                },
+                                "dataEmissao": {
+                                  "type": "string",
+                                  "example": "2023-01-01"
+                                },
+                                "dataVencimento": {
+                                  "type": "string",
+                                  "example": "2023-01-01"
+                                },
+                                "dataPagamento": {
+                                  "type": "string",
+                                  "example": ""
+                                },
+                                "dataCancelamento": {
+                                  "type": "string",
+                                  "example": ""
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Exemplo de resposta": {
+                    "summary": "Exemplo de resposta de listagem de clientes",
+                    "value": {
+                      "paginacao": {
+                        "offset": 0,
+                        "limit": 100,
+                        "parcial": 1,
+                        "total": 1
+                      },
+                      "clientes": [
+                        {
+                          "nome": "NOME",
+                          "cpfcnpj": "00000000000",
+                          "dataCadastro": "2023-01-01",
+                          "tipo": "TIPO_PESSOA",
+                          "observacao_cliente": "OBSERVACAO_CLIENTE",
+                          "endereco": {
+                            "logradouro": "LOGRADOURO",
+                            "numero": 1,
+                            "bairro": "BAIRRO",
+                            "cidade": "CIDADE",
+                            "uf": "UF",
+                            "cep": "99999-999",
+                            "complemento": "COMPLEMENTO",
+                            "latitude": "-99.9999999",
+                            "longitude": "-99.9999999"
+                          },
+                          "contratos": [
+                            {
+                              "contrato": 1,
+                              "dataCadastro": "2023-01-01",
+                              "status": "STATUS",
+                              "servicos": [
+                                {
+                                  "id": 1,
+                                  "tipo": "TIPO",
+                                  "plano": {
+                                    "id": 1,
+                                    "descricao": "DESCRICAO"
+                                  },
+                                  "login": "LOGIN",
+                                  "observacao_servico": "OBSERVACAO_SERVICO",
+                                  "senha": "SENHA",
+                                  "mac": "X9:9X:9X:99:X9:X9",
+                                  "ip": "IP",
+                                  "grupo": "GRUPO",
+                                  "wifi_ssid": "WIFI_SSID",
+                                  "wifi_password": "WIF_PASSWORD",
+                                  "wifi_channel": "WIFI_CHANNEL",
+                                  "wifi_ssid_5": "WIFI_SSID_5",
+                                  "wifi_password_5": "WIFI_PASSWORD_5",
+                                  "onu": {
+                                    "voip_sip_username": "VOIP_SIP_USERNAME",
+                                    "splitter": {
+                                      "porta": 1,
+                                      "id": 1,
+                                      "nome": "NOME"
+                                    },
+                                    "voip_mascara": "VOIP_MASCARA",
+                                    "vlan": 1,
+                                    "voip_username": "VOIP_USERNAME",
+                                    "telnet": "TELNET",
+                                    "rx": "-99.999",
+                                    "pon": 1,
+                                    "voip_service_name": "VOIP_SERVICE_NAME",
+                                    "wifi_ssid": "WIFI_SSID",
+                                    "conexao": {
+                                      "status": "online",
+                                      "ip": "999.99.9.999",
+                                      "data_conexao": "2024-01-01 00:00:00",
+                                      "data_desconexao": "2024-01-02 00:00:00"
+                                    },
+                                    "wifi_password_5": "WIFI_PASSWORD_5",
+                                    "olt_id": 1,
+                                    "wifi_password": "WIFI_PASSWORD",
+                                    "serial": "SERIAL",
+                                    "password": "PASSWORD",
+                                    "voip_sip_password": "VOIP_SIP_PASSWORD",
+                                    "id": 1,
+                                    "onu": 1,
+                                    "slot": 1,
+                                    "web": true,
+                                    "onu_login": "ONU_LOGIN",
+                                    "web_port": "WEB_PORT",
+                                    "pon_vlan": 1,
+                                    "tx": "9.999",
+                                    "voip_porta": "VOIP_PORTA",
+                                    "onu_password": "ONU_PASSWORD",
+                                    "wifi_ssid_5": "WIFI_SSID_5",
+                                    "olt_nome": "OLT_NOME",
+                                    "wifi_channel_5": "WIFI_CHANNEL_5",
+                                    "voip_telefone": "VOIP_TELEFONE",
+                                    "wifi_channel": 11,
+                                    "voip_ip": "VOIP_IP",
+                                    "login": "LOGIN",
+                                    "voip_gateway": "VOIP_GATEWAY",
+                                    "voip_vlan": "VOIP_VLAN"
+                                  },
+                                  "endereco": {
+                                    "logradouro": "LOGRADOURO",
+                                    "numero": 1,
+                                    "bairro": "BAIRRO",
+                                    "cidade": "CIDADE",
+                                    "uf": "UF",
+                                    "cep": "99999-999",
+                                    "complemento": "COMPLEMENTO",
+                                    "latitude": "LATITUDE",
+                                    "longitude": "LONGITUDE"
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "titulos": [
+                            {
+                              "id": 1,
+                              "portador": "PORTADOR",
+                              "numeroDocumento": 1,
+                              "contrato": 1,
+                              "status": "STATUS",
+                              "valor": 99.99,
+                              "valorCorrigido": 99.99,
+                              "valorPago": "",
+                              "diasAtraso": 0,
+                              "codigoBarras": "000",
+                              "codigoPix": "",
+                              "dataEmissao": "2023-01-01",
+                              "dataVencimento": "2023-01-01",
+                              "dataPagamento": "",
+                              "dataCancelamento": ""
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
