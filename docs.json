@@ -11,7 +11,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Guias",
         "groups": [
           {
             "group": "Get Started",
@@ -45,9 +45,8 @@
           {
             "group": "Endpoints",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
+              "api-reference/endpoint/post-clients",
+              "api-reference/endpoint/get-planos",
               "api-reference/endpoint/webhook"
             ]
           }
@@ -62,8 +61,8 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Repositorio",
+        "href": "https://github.com/Peixotoinho/docs"
       }
     ],
     "primary": {

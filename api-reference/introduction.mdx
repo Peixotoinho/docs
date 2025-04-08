@@ -3,18 +3,28 @@ title: 'Comece aqui'
 description: 'O objetivo dessa documentação é expor as APIs mais relevantes do SGP e que fazem sentido para a Zapisp.'
 ---
 
-<Note>
- Todas as chamadas para a API do SGP devem conter ao menos dois parâmetros, app e token que são gerados pelo SGP na aba Administração > Integrações > Tokens.
-</Note>
-
 ## Authentication
 
-A primeira coisa a se faze
+A primeira coisa a se fazer antes de realizar qualquer chamada no SGP é gerar o token do aplicativo Zapisp no SGP.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+## Passo 1: Esse tutorial vai supor que voce já está logado no SGP.
+
+- Navegue para a seção de tokens do SGP, que está em **Administração > Integrações > Tokens**
+
+![Tutorial SGP 1](../images/tutorial-sgp-1.png)
+
+## Passo 2: Clique no botão **ADICIONAR TOKEN** como mostrado na imagem abaixo.
+![Logo do SGP](../images/tutorial-sgp-2.png)
+
+## Passo 3: Na pagina de **Adicionar Token** basta preencher a Descrição como **Zapisp** e criar uma Aplicação chamada Zapisp e marcar como está na foto.
+![Logo do SGP](../images/tutorial-sgp-3.png)
+
+## Passo 4: Agora basta salvar.
+![Logo do SGP](../images/tutorial-sgp-4.png)
+
+## Passo 5: Após ter criado o token ele será exibido na listagem, agora só copiar o nome do app e o token e utilizar nas suas rotas. 
+![Logo do SGP](../images/tutorial-sgp-5.png)
+
+<Note>
+ Todas as chamadas para a API do SGP devem conter ao menos dois parâmetros, **app** e **token** que são gerados pelo SGP na aba Administração > Integrações > Tokens.
+</Note>
